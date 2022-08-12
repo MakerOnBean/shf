@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dk.dao.DictDao">
+
+    <sql id="columns">
+        select id,parent_id,name,dict_code,create_time,update_time,is_deleted
+    </sql>
+
+<!--    List<Dict> findListByParentId(Long id);-->
+    <select id="findListByParentId" resultType="dict">
+        <include refid="columns"/>
+        from hse_dict where parent_id = #{id} and is_deleted=0
+    </select>
+
+<!--    Integer childNodesCount(Long id);-->
+    <select id="childNodesCount" resultType="int">
+        select count(*) from hse_dict where parent_id = #{id} and is_deleted = 0
+    </select>
+
+    <!--Dict getDictByDictCode(String dictCode);-->
+    <select id="getDictByDictCode" resultType="dict">
+        <include refid="columns"/>
+        from hse_dict where dict_code = #{dictCode} and is_deleted = 0
+    </select>
+
+    <!--String getNameById(Long id);-->
+    <select id="getNameById" resultType="string">
+        select name from hse_dict where id=#{id} and is_deleted = 0
+    </select>
+</mapper>
